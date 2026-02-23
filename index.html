@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jiu Jitsu Style — Coming Soon</title>
   <meta name="description" content="Jiu Jitsu Style is building something awesome. Sign up to get notified when we launch.">
+  <meta name="theme-color" content="#c0272d">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Jiu Jitsu Style — Coming Soon">
+  <meta property="og:description" content="We're building something awesome for you. Sign up to get notified when we launch.">
+  <meta property="og:image" content="https://bjjstyle.com/images/bjjstyle-logo.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jiu Jitsu Style — Coming Soon">
+  <meta name="twitter:description" content="We're building something awesome for you. Sign up to get notified when we launch.">
+  <meta name="twitter:image" content="https://bjjstyle.com/images/bjjstyle-logo.png">
+  <meta name="twitter:site" content="@JiuJitsuStyle">
+
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -33,8 +53,6 @@
       </button>
     </form>
 
-    <p class="privacy-note">No spam. Ever.</p>
-
     <div id="formSuccess" class="form-message" style="display:none;">
       <p>You're on the list! We'll let you know when we launch.</p>
     </div>
@@ -46,9 +64,25 @@
   </main>
 
   <footer>
-    <a href="https://www.instagram.com/bjjstyle" target="_blank" rel="noopener">
-      Instagram &rarr; @bjjstyle
-    </a>
+    <div class="social-links">
+      <a href="https://www.instagram.com/bjjstyle" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/bjjstyle" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+      <a href="https://x.com/JiuJitsuStyle" target="_blank" rel="noopener" aria-label="X">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+    </div>
   </footer>
 
   <script src="https://www.google.com/recaptcha/api.js?render=6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX" async></script>

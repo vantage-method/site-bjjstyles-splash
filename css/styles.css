@@ -192,15 +192,19 @@ footer {
   padding-bottom: 2rem;
 }
 
-footer a {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: none;
-  letter-spacing: 0.05em;
-  transition: color 0.2s;
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-footer a:hover {
+.social-links a {
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.2s;
+  display: flex;
+}
+
+.social-links a:hover {
   color: #fff;
 }
 
