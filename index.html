@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jiu Jitsu Style — Coming Soon</title>
+  <meta name="description" content="Jiu Jitsu Style is building something awesome. Sign up to get notified when we launch.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-title">
+    <h1>Jiu Jitsu Style</h1>
+  </header>
+
+  <main>
+    <p class="headline">We're building something awesome for you.</p>
+    <p class="subtitle">Get notified when it's ready.</p>
+
+    <form class="signup-form" id="signup-form">
+      <input type="hidden" name="formId" value="pBmsDcAtabDnU4kh6X14">
+      <input type="hidden" name="location_id" value="tVGdeIuZuaSz68wIoKXS">
+      <input type="email" name="email" placeholder="Enter your email..." required>
+      <button type="submit">
+        <span class="btn-text">Notify Me</span>
+        <span class="btn-loading" aria-hidden="true">
+          <svg class="spinner" width="18" height="18" viewBox="0 0 20 20">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-dasharray="40" stroke-dashoffset="10" stroke-linecap="round" />
+          </svg>
+          Sending...
+        </span>
+      </button>
+    </form>
+
+    <p class="privacy-note">No spam. Ever.</p>
+
+    <div id="formSuccess" class="form-message" style="display:none;">
+      <p>You're on the list! We'll let you know when we launch.</p>
+    </div>
+    <div id="formError" class="form-message form-error" style="display:none;">
+      <p>Something went wrong. Please try again.</p>
+    </div>
+
+    <p class="recaptcha-notice">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
+  </main>
+
+  <footer>
+    <a href="https://www.instagram.com/bjjstyle" target="_blank" rel="noopener">
+      Instagram &rarr; @bjjstyle
+    </a>
+  </footer>
+
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX" async></script>
+  <script src="js/form.js"></script>
+</body>
+</html>

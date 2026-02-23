@@ -1,0 +1,230 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  background: #111;
+}
+
+/* ── Background image with dark overlay ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../images/bjjstyle-background.webp") center / cover no-repeat;
+  filter: brightness(0.35);
+  z-index: -1;
+}
+
+/* ── Site title ── */
+.site-title {
+  text-align: center;
+  padding-top: 2.5rem;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.site-title h1 {
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Main content ── */
+main {
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 620px;
+  width: 100%;
+}
+
+.headline {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 2rem;
+}
+
+/* ── Email form ── */
+.signup-form {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  max-width: 460px;
+  margin: 0 auto 0.75rem;
+}
+
+.signup-form input[type="email"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-right: none;
+  background: transparent;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.signup-form input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.signup-form input[type="email"]:focus {
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.signup-form button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.signup-form button:hover {
+  background: transparent;
+  color: #fff;
+}
+
+.privacy-note {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Button loading state ── */
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.signup-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Email validation error ── */
+.signup-form input.error {
+  border-color: #e55;
+}
+
+/* ── Form messages ── */
+.form-message {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.form-error {
+  color: #f88;
+}
+
+/* ── Hide reCAPTCHA badge (notice text satisfies Google ToS) ── */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+
+/* ── reCAPTCHA notice ── */
+.recaptcha-notice {
+  margin-top: 1.5rem;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.35);
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.recaptcha-notice a {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: underline;
+}
+
+/* ── Footer ── */
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+footer a {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+footer a:hover {
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .headline {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .signup-form {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .signup-form input[type="email"] {
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: none;
+  }
+
+  .signup-form button {
+    width: 100%;
+  }
+}
