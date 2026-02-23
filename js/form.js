@@ -53,7 +53,8 @@
             }
 
             form.style.display = 'none';
-            document.querySelector('.privacy-note').style.display = 'none';
+            var privacyNote = document.querySelector('.privacy-note');
+            if (privacyNote) privacyNote.style.display = 'none';
             successEl.style.display = 'block';
         } catch (err) {
             console.error('Form submission error:', err);
