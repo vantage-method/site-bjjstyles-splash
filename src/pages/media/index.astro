@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Media" description="Technique library, lifestyle videos, and podcast.">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold uppercase tracking-wide mb-8">Media</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a
+        href="/media/techniques"
+        class="bg-white/5 border border-white/10 rounded-lg p-8 text-center hover:border-brand-red/50 transition-colors duration-200 group"
+      >
+        <h2 class="text-xl font-bold uppercase tracking-wide mb-2 group-hover:text-brand-red transition-colors">
+          Technique Library
+        </h2>
+        <p class="text-brand-subtle text-sm">
+          Browse techniques by position and style.
+        </p>
+      </a>
+
+      <a
+        href="/media/lifestyle"
+        class="bg-white/5 border border-white/10 rounded-lg p-8 text-center hover:border-brand-red/50 transition-colors duration-200 group"
+      >
+        <h2 class="text-xl font-bold uppercase tracking-wide mb-2 group-hover:text-brand-red transition-colors">
+          Lifestyle
+        </h2>
+        <p class="text-brand-subtle text-sm">
+          Culture, stories, and jiu-jitsu life.
+        </p>
+      </a>
+
+      <a
+        href="/media/podcast"
+        class="bg-white/5 border border-white/10 rounded-lg p-8 text-center hover:border-brand-red/50 transition-colors duration-200 group"
+      >
+        <h2 class="text-xl font-bold uppercase tracking-wide mb-2 group-hover:text-brand-red transition-colors">
+          Podcast
+        </h2>
+        <p class="text-brand-subtle text-sm">
+          Conversations with the community.
+        </p>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

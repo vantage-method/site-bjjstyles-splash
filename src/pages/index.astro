@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <!-- Hero Section -->
+  <section
+    class="relative min-h-[80vh] flex items-center justify-center text-center px-4"
+    style="background: linear-gradient(rgba(17,17,17,0.65), rgba(17,17,17,0.65)), url('/images/bjjstyle-background.webp') center/cover no-repeat fixed;"
+  >
+    <div class="max-w-2xl">
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+        Jiu Jitsu Style
+      </h1>
+      <p class="text-brand-muted text-lg sm:text-xl mb-8">
+        Culture. Technique. Community.
+      </p>
+      <a
+        href="/about"
+        class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
+      >
+        Discover More
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured Technique (placeholder) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Featured Technique</h2>
+    <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+      <p class="text-brand-subtle">Technique videos coming soon.</p>
+    </div>
+  </section>
+
+  <!-- Upcoming Events (placeholder) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Upcoming Events</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[1, 2, 3].map(() => (
+        <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+          <p class="text-brand-subtle text-sm">Events coming soon.</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Latest Article (placeholder) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Latest Articles</h2>
+    <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+      <p class="text-brand-subtle">Articles coming soon.</p>
+    </div>
+  </section>
+
+  <!-- Shop Highlight (placeholder) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Shop</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[1, 2, 3].map(() => (
+        <div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+          <p class="text-brand-subtle text-sm">Products coming soon.</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Mission Spotlight -->
+  <section class="bg-white/5 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Our Mission</h2>
+      <p class="text-brand-muted max-w-2xl mx-auto mb-6">
+        10% of all Jiu Jitsu Style profits go directly toward fighting human trafficking
+        through our partnership with Skull Games.
+      </p>
+      <a
+        href="/mission"
+        class="inline-block border border-brand-red text-brand-red font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:bg-brand-red hover:text-brand-white transition-all duration-200"
+      >
+        Learn More
+      </a>
+    </div>
+  </section>
+
+  <!-- Newsletter (placeholder — will be replaced with GHL React island) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+    <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Stay Connected</h2>
+    <p class="text-brand-muted mb-8">Get notified about new content, events, and drops.</p>
+    <div class="max-w-md mx-auto bg-white/5 border border-white/10 rounded-lg p-8">
+      <p class="text-brand-subtle text-sm">Newsletter signup coming soon.</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,60 @@
+---
+import { SITE, NAV_ITEMS } from '../../lib/constants';
+import SocialLinks from '../shared/SocialLinks.astro';
+---
+
+<footer class="border-t border-white/10 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="flex items-center gap-3 mb-4">
+          <img
+            src="/images/bjjstyle-logo.png"
+            alt={SITE.name}
+            width="32"
+            height="32"
+            class="w-8 h-8"
+          />
+          <span class="text-brand-white font-bold tracking-wide uppercase">
+            {SITE.name}
+          </span>
+        </a>
+        <p class="text-brand-subtle text-sm leading-relaxed max-w-xs">
+          The most dynamic, authentic, and culturally connected brand in the global jiu-jitsu community.
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h3 class="text-brand-white font-semibold text-sm uppercase tracking-wider mb-4">
+          Navigate
+        </h3>
+        <nav class="flex flex-col gap-2">
+          {NAV_ITEMS.map((item) => (
+            <a
+              href={item.href}
+              class="text-brand-subtle hover:text-brand-white text-sm transition-colors duration-200"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="text-brand-white font-semibold text-sm uppercase tracking-wider mb-4">
+          Follow Us
+        </h3>
+        <SocialLinks />
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 mt-8 pt-8 text-center">
+      <p class="text-brand-faint text-xs">
+        &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

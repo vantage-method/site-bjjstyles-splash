@@ -1,0 +1,43 @@
+---
+import { NAV_ITEMS } from '../../lib/constants';
+import MobileNav from './MobileNav';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-brand-dark/95 backdrop-blur-sm border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3">
+      <img
+        src="/images/bjjstyle-logo.png"
+        alt="Jiu Jitsu Style"
+        width="36"
+        height="36"
+        class="w-9 h-9"
+      />
+      <span class="text-brand-white font-bold text-lg tracking-wide uppercase hidden sm:inline">
+        Jiu Jitsu Style
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-6">
+      {NAV_ITEMS.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'text-sm tracking-wide uppercase transition-colors duration-200',
+            currentPath === item.href
+              ? 'text-brand-red'
+              : 'text-brand-muted hover:text-brand-white',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile nav -->
+    <MobileNav client:load currentPath={currentPath} />
+  </div>
+</header>
