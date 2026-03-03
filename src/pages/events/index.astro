@@ -1,41 +1,128 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEvents } from '../../lib/payload';
+import type { Event } from '../../lib/payload';
+
+const res = await getEvents(50);
+const events = res?.docs ?? [];
+
+const grouped: Record<string, Event[]> = {
+  'jiu-jitsu-style': [],
+  'skull-games': [],
+  'community': [],
+};
+
+for (const event of events) {
+  if (grouped[event.eventType]) {
+    grouped[event.eventType].push(event);
+  }
+}
+
+const sections = [
+  { key: 'jiu-jitsu-style', label: 'Jiu-Jitsu Style Events' },
+  { key: 'skull-games', label: 'Skull Games Events' },
+  { key: 'community', label: 'Community Events' },
+];
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+const typeBadgeColors: Record<string, string> = {
+  'jiu-jitsu-style': 'bg-brand-red/20 text-red-300',
+  'skull-games': 'bg-purple-900/40 text-purple-300',
+  'community': 'bg-green-900/40 text-green-300',
+};
 ---
 
 <BaseLayout title="Events" description="Jiu-jitsu events, seminars, and competitions.">
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <h1 class="text-4xl font-bold uppercase tracking-wide mb-8">Events</h1>
 
-    <div class="space-y-12">
-      <div>
-        <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Global Calendar</h2>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-          <p class="text-brand-subtle">Event calendar coming soon.</p>
+    {events.length > 0 ? (
+      <div class="space-y-12">
+        {sections.map(({ key, label }) => {
+          const sectionEvents = grouped[key];
+          if (!sectionEvents.length) return null;
+          return (
+            <div>
+              <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">{label}</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {sectionEvents.map((event) => (
+                  <a
+                    href={`/events/${event.slug}`}
+                    class="bg-white/5 border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-colors group"
+                  >
+                    {event.featuredImage && (
+                      <img
+                        src={event.featuredImage.sizes?.card?.url ?? event.featuredImage.url}
+                        alt={event.featuredImage.alt || event.title}
+                        class="w-full aspect-video object-cover"
+                      />
+                    )}
+                    <div class="p-6">
+                      <span class={`inline-block text-xs uppercase tracking-wider px-2 py-1 rounded mb-2 ${typeBadgeColors[event.eventType] ?? 'bg-white/10'}`}>
+                        {label.replace(' Events', '')}
+                      </span>
+                      <h3 class="font-bold text-lg mb-2 group-hover:text-brand-red transition-colors">
+                        {event.title}
+                      </h3>
+                      <p class="text-brand-subtle text-sm">{formatDate(event.date)}</p>
+                      {event.location && (
+                        <p class="text-brand-faint text-sm mt-1">{event.location}</p>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        <div class="text-center">
+          <a
+            href="/events/request-seminar"
+            class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
+          >
+            Request a Seminar
+          </a>
         </div>
       </div>
+    ) : (
+      <div class="space-y-12">
+        <div>
+          <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Global Calendar</h2>
+          <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+            <p class="text-brand-subtle">Event calendar coming soon.</p>
+          </div>
+        </div>
 
-      <div>
-        <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Jiu-Jitsu Style Events</h2>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-          <p class="text-brand-subtle">Our events coming soon.</p>
+        <div>
+          <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Jiu-Jitsu Style Events</h2>
+          <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+            <p class="text-brand-subtle">Our events coming soon.</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Skull Games Events</h2>
+          <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+            <p class="text-brand-subtle">Skull Games events coming soon.</p>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <a
+            href="/events/request-seminar"
+            class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
+          >
+            Request a Seminar
+          </a>
         </div>
       </div>
-
-      <div>
-        <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Skull Games Events</h2>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-          <p class="text-brand-subtle">Skull Games events coming soon.</p>
-        </div>
-      </div>
-
-      <div class="text-center">
-        <a
-          href="/events/request-seminar"
-          class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
-        >
-          Request a Seminar
-        </a>
-      </div>
-    </div>
+    )}
   </section>
 </BaseLayout>

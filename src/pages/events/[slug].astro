@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEvents } from '../../lib/payload';
+import { serializeLexical } from '../../lib/lexical';
+
+export async function getStaticPaths() {
+  const res = await getEvents(100);
+  if (!res?.docs.length) return [];
+  return res.docs.map((event) => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const descriptionHtml = serializeLexical(event.description);
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+const dateDisplay = event.endDate
+  ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
+  : formatDate(event.date);
+
+const imageUrl = event.featuredImage?.sizes?.hero?.url ?? event.featuredImage?.url;
+
+const typeBadgeColors: Record<string, string> = {
+  'jiu-jitsu-style': 'bg-brand-red/20 text-red-300',
+  'skull-games': 'bg-purple-900/40 text-purple-300',
+  'community': 'bg-green-900/40 text-green-300',
+};
+
+const typeLabels: Record<string, string> = {
+  'jiu-jitsu-style': 'Jiu-Jitsu Style',
+  'skull-games': 'Skull Games',
+  'community': 'Community',
+};
+---
+
+<BaseLayout
+  title={event.title}
+  description={`${event.title} — ${dateDisplay}${event.location ? ` at ${event.location}` : ''}`}
+  ogImage={imageUrl ?? undefined}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {/* Header */}
+    <header class="mb-10">
+      <span class={`inline-block text-xs uppercase tracking-wider px-3 py-1 rounded mb-4 ${typeBadgeColors[event.eventType] ?? 'bg-white/10'}`}>
+        {typeLabels[event.eventType] ?? event.eventType}
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+        {event.title}
+      </h1>
+      <div class="flex flex-wrap items-center gap-4 text-brand-subtle text-sm">
+        <time datetime={event.date}>{dateDisplay}</time>
+        {event.location && <span>📍 {event.location}</span>}
+      </div>
+    </header>
+
+    {/* Featured image */}
+    {imageUrl && (
+      <img
+        src={imageUrl}
+        alt={event.featuredImage?.alt || event.title}
+        class="w-full rounded-lg mb-10 object-cover max-h-[480px]"
+      />
+    )}
+
+    {/* Description */}
+    {descriptionHtml ? (
+      <div
+        class="prose prose-invert prose-lg max-w-none
+          prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-wide
+          prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline
+          prose-blockquote:border-l-brand-red prose-blockquote:text-brand-muted"
+        set:html={descriptionHtml}
+      />
+    ) : (
+      <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+        <p class="text-brand-subtle">Event details coming soon.</p>
+      </div>
+    )}
+
+    {/* External link */}
+    {event.externalUrl && (
+      <div class="mt-10">
+        <a
+          href={event.externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
+        >
+          Event Details &rarr;
+        </a>
+      </div>
+    )}
+
+    {/* Back link */}
+    <div class="mt-10">
+      <a
+        href="/events"
+        class="text-sm text-brand-red hover:brightness-125 transition-all"
+      >
+        &larr; Back to Events
+      </a>
+    </div>
+  </article>
+</BaseLayout>

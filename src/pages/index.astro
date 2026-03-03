@@ -1,6 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/forms/NewsletterForm';
+import { getSiteSettings, getEvents, getArticles } from '../lib/payload';
+
+const settings = await getSiteSettings();
+const eventsRes = await getEvents(3);
+const articlesRes = await getArticles(3);
+
+const featuredTechnique = settings?.featuredTechnique ?? null;
+const events = eventsRes?.docs ?? [];
+const articles = articlesRes?.docs ?? [];
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+const typeLabels: Record<string, string> = {
+  'jiu-jitsu-style': 'JJS',
+  'skull-games': 'Skull Games',
+  'community': 'Community',
+};
 ---
 
 <BaseLayout>
@@ -11,46 +33,149 @@ import NewsletterForm from '../components/forms/NewsletterForm';
   >
     <div class="max-w-2xl">
       <h1 class="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-        Jiu Jitsu Style
+        {settings?.heroHeadline ?? 'Jiu Jitsu Style'}
       </h1>
       <p class="text-brand-muted text-lg sm:text-xl mb-8">
-        Culture. Technique. Community.
+        {settings?.heroSubtext ?? 'Culture. Technique. Community.'}
       </p>
       <a
-        href="/about"
+        href={settings?.heroCta?.url ?? '/about'}
         class="inline-block bg-brand-red text-brand-white font-semibold px-8 py-3 text-sm uppercase tracking-wider hover:brightness-110 transition-all duration-200"
       >
-        Discover More
+        {settings?.heroCta?.label ?? 'Discover More'}
       </a>
     </div>
   </section>
 
-  <!-- Featured Technique (placeholder) -->
+  <!-- Featured Technique -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Featured Technique</h2>
-    <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-      <p class="text-brand-subtle">Technique videos coming soon.</p>
-    </div>
-  </section>
-
-  <!-- Upcoming Events (placeholder) -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Upcoming Events</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {[1, 2, 3].map(() => (
-        <div class="bg-white/5 border border-white/10 rounded-lg p-6">
-          <p class="text-brand-subtle text-sm">Events coming soon.</p>
+    {featuredTechnique ? (
+      <div class="bg-white/5 border border-white/10 rounded-lg overflow-hidden md:flex">
+        {featuredTechnique.thumbnail && (
+          <img
+            src={featuredTechnique.thumbnail.sizes?.card?.url ?? featuredTechnique.thumbnail.url}
+            alt={featuredTechnique.thumbnail.alt || featuredTechnique.title}
+            class="w-full md:w-1/2 aspect-video object-cover"
+          />
+        )}
+        <div class="p-6 md:p-8 flex flex-col justify-center">
+          <h3 class="text-xl font-bold mb-2">{featuredTechnique.title}</h3>
+          <div class="flex gap-2 mb-4">
+            <span class="text-xs uppercase tracking-wider bg-white/10 px-2 py-1 rounded">
+              {featuredTechnique.position}
+            </span>
+            <span class={`text-xs uppercase tracking-wider px-2 py-1 rounded ${
+              featuredTechnique.gi === 'gi'
+                ? 'bg-blue-900/40 text-blue-300'
+                : featuredTechnique.gi === 'no-gi'
+                  ? 'bg-orange-900/40 text-orange-300'
+                  : 'bg-purple-900/40 text-purple-300'
+            }`}>
+              {featuredTechnique.gi === 'both' ? 'Gi & No-Gi' : featuredTechnique.gi === 'gi' ? 'Gi' : 'No-Gi'}
+            </span>
+          </div>
+          {featuredTechnique.videoUrl && (
+            <a
+              href={featuredTechnique.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block text-sm text-brand-red hover:brightness-125 transition-all"
+            >
+              Watch Video &rarr;
+            </a>
+          )}
         </div>
-      ))}
-    </div>
+      </div>
+    ) : (
+      <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+        <p class="text-brand-subtle">Technique videos coming soon.</p>
+      </div>
+    )}
   </section>
 
-  <!-- Latest Article (placeholder) -->
+  <!-- Upcoming Events -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl font-bold uppercase tracking-wide mb-8">Latest Articles</h2>
-    <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-      <p class="text-brand-subtle">Articles coming soon.</p>
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold uppercase tracking-wide">Upcoming Events</h2>
+      {events.length > 0 && (
+        <a href="/events" class="text-sm text-brand-red hover:brightness-125 transition-all">
+          View All &rarr;
+        </a>
+      )}
     </div>
+    {events.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {events.map((event) => (
+          <a
+            href={`/events/${event.slug}`}
+            class="bg-white/5 border border-white/10 rounded-lg p-6 hover:border-white/20 transition-colors group"
+          >
+            <span class="text-xs uppercase tracking-wider text-brand-subtle">
+              {typeLabels[event.eventType] ?? event.eventType}
+            </span>
+            <h3 class="font-bold text-lg mt-1 mb-2 group-hover:text-brand-red transition-colors">
+              {event.title}
+            </h3>
+            <p class="text-brand-subtle text-sm">{formatDate(event.date)}</p>
+            {event.location && (
+              <p class="text-brand-faint text-sm mt-1">{event.location}</p>
+            )}
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[1, 2, 3].map(() => (
+          <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+            <p class="text-brand-subtle text-sm">Events coming soon.</p>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <!-- Latest Articles -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold uppercase tracking-wide">Latest Articles</h2>
+      {articles.length > 0 && (
+        <a href="/articles" class="text-sm text-brand-red hover:brightness-125 transition-all">
+          View All &rarr;
+        </a>
+      )}
+    </div>
+    {articles.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {articles.map((article) => (
+          <a
+            href={`/articles/${article.slug}`}
+            class="bg-white/5 border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-colors group"
+          >
+            {article.featuredImage && (
+              <img
+                src={article.featuredImage.sizes?.card?.url ?? article.featuredImage.url}
+                alt={article.featuredImage.alt || article.title}
+                class="w-full aspect-video object-cover"
+              />
+            )}
+            <div class="p-6">
+              <h3 class="font-bold text-lg mb-2 group-hover:text-brand-red transition-colors">
+                {article.title}
+              </h3>
+              {article.excerpt && (
+                <p class="text-brand-subtle text-sm line-clamp-2 mb-3">{article.excerpt}</p>
+              )}
+              <p class="text-brand-faint text-xs">{formatDate(article.createdAt)}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+        <p class="text-brand-subtle">Articles coming soon.</p>
+      </div>
+    )}
   </section>
 
   <!-- Shop Highlight (placeholder) -->

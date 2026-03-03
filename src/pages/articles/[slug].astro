@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticles, getArticleBySlug } from '../../lib/payload';
+import { serializeLexical } from '../../lib/lexical';
+
+export async function getStaticPaths() {
+  const res = await getArticles(100);
+  if (!res?.docs.length) return [];
+  return res.docs.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const contentHtml = serializeLexical(article.content);
+const formattedDate = new Date(article.createdAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const imageUrl = article.featuredImage?.sizes?.hero?.url ?? article.featuredImage?.url;
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.excerpt ?? `Read ${article.title} on Jiu Jitsu Style.`}
+  ogImage={imageUrl ?? undefined}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {/* Header */}
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+        {article.title}
+      </h1>
+      <div class="flex flex-wrap items-center gap-4 text-brand-subtle text-sm">
+        {article.author && <span>By {article.author}</span>}
+        <time datetime={article.createdAt}>{formattedDate}</time>
+      </div>
+    </header>
+
+    {/* Featured image */}
+    {imageUrl && (
+      <img
+        src={imageUrl}
+        alt={article.featuredImage?.alt || article.title}
+        class="w-full rounded-lg mb-10 object-cover max-h-[480px]"
+      />
+    )}
+
+    {/* Content */}
+    {contentHtml ? (
+      <div
+        class="prose prose-invert prose-lg max-w-none
+          prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-wide
+          prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline
+          prose-blockquote:border-l-brand-red prose-blockquote:text-brand-muted"
+        set:html={contentHtml}
+      />
+    ) : (
+      <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+        <p class="text-brand-subtle">Article content coming soon.</p>
+      </div>
+    )}
+
+    {/* Tags */}
+    {article.tags && article.tags.length > 0 && (
+      <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap gap-2">
+        {article.tags.map(({ tag }: { tag: string }) => (
+          <span class="text-xs uppercase tracking-wider bg-white/10 px-3 py-1 rounded">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {/* Back link */}
+    <div class="mt-10">
+      <a
+        href="/articles"
+        class="text-sm text-brand-red hover:brightness-125 transition-all"
+      >
+        &larr; Back to Articles
+      </a>
+    </div>
+  </article>
+</BaseLayout>

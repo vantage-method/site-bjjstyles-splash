@@ -1,5 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAmbassadors, getSponsors } from '../lib/payload';
+import type { Sponsor } from '../lib/payload';
+
+const ambassadorsRes = await getAmbassadors();
+const sponsorsRes = await getSponsors();
+
+const ambassadors = ambassadorsRes?.docs ?? [];
+const sponsors = sponsorsRes?.docs ?? [];
+
+const tierOrder = ['title', 'gold', 'silver', 'community'] as const;
+const tierLabels: Record<string, string> = {
+  title: 'Title Sponsors',
+  gold: 'Gold Sponsors',
+  silver: 'Silver Sponsors',
+  community: 'Community Partners',
+};
+
+const sponsorsByTier: Record<string, Sponsor[]> = {};
+for (const tier of tierOrder) {
+  const tierSponsors = sponsors.filter((s) => s.tier === tier);
+  if (tierSponsors.length) sponsorsByTier[tier] = tierSponsors;
+}
 ---
 
 <BaseLayout title="About" description="Our story, vision, sponsors, and ambassadors.">
@@ -28,18 +50,102 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </div>
 
+      <!-- Sponsors -->
       <div>
         <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Sponsors</h2>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-          <p class="text-brand-subtle">Sponsor listings coming soon.</p>
-        </div>
+        {Object.keys(sponsorsByTier).length > 0 ? (
+          <div class="space-y-8">
+            {tierOrder.map((tier) => {
+              const tierSponsors = sponsorsByTier[tier];
+              if (!tierSponsors) return null;
+              return (
+                <div>
+                  <h3 class="text-lg font-semibold uppercase tracking-wide text-brand-muted mb-4">
+                    {tierLabels[tier]}
+                  </h3>
+                  <div class={`grid gap-6 ${tier === 'title' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'}`}>
+                    {tierSponsors.map((sponsor) => (
+                      <div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+                        {sponsor.logo && (
+                          <img
+                            src={sponsor.logo.sizes?.thumbnail?.url ?? sponsor.logo.url}
+                            alt={sponsor.logo.alt || sponsor.name}
+                            class="h-16 mx-auto mb-3 object-contain"
+                          />
+                        )}
+                        <h4 class="font-bold mb-1">{sponsor.name}</h4>
+                        {sponsor.description && (
+                          <p class="text-brand-subtle text-sm">{sponsor.description}</p>
+                        )}
+                        {sponsor.website && (
+                          <a
+                            href={sponsor.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-block text-xs text-brand-red mt-2 hover:brightness-125 transition-all"
+                          >
+                            Visit Website &rarr;
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+            <p class="text-brand-subtle">Sponsor listings coming soon.</p>
+          </div>
+        )}
       </div>
 
+      <!-- Ambassadors -->
       <div>
         <h2 class="text-2xl font-bold uppercase tracking-wide mb-4">Ambassadors</h2>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-          <p class="text-brand-subtle">Ambassador profiles coming soon.</p>
-        </div>
+        {ambassadors.length > 0 ? (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ambassadors.map((ambassador) => (
+              <div class="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+                {ambassador.photo && (
+                  <img
+                    src={ambassador.photo.sizes?.card?.url ?? ambassador.photo.url}
+                    alt={ambassador.photo.alt || ambassador.name}
+                    class="w-full aspect-square object-cover"
+                  />
+                )}
+                <div class="p-6">
+                  <h3 class="font-bold text-lg mb-1">{ambassador.name}</h3>
+                  {ambassador.academy && (
+                    <p class="text-brand-subtle text-sm mb-3">{ambassador.academy}</p>
+                  )}
+                  {ambassador.bio && (
+                    <p class="text-brand-muted text-sm leading-relaxed mb-3">{ambassador.bio}</p>
+                  )}
+                  {ambassador.socialLinks && ambassador.socialLinks.length > 0 && (
+                    <div class="flex gap-3">
+                      {ambassador.socialLinks.map(({ platform, url }) => (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-xs text-brand-red hover:brightness-125 transition-all"
+                        >
+                          {platform}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+            <p class="text-brand-subtle">Ambassador profiles coming soon.</p>
+          </div>
+        )}
       </div>
     </div>
   </section>
