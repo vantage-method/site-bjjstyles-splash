@@ -38,6 +38,8 @@ export const NAV_ITEMS = [
 export const GHL = {
   submitUrl: 'https://backend.leadconnectorhq.com/forms/submit',
   newsletterFormId: 'pBmsDcAtabDnU4kh6X14',
+  contactFormId: 'PLACEHOLDER_CONTACT_FORM_ID', // TODO: Replace with real GHL form ID once created in dashboard
+  seminarFormId: 'PLACEHOLDER_SEMINAR_FORM_ID', // TODO: Replace with real GHL form ID once created in dashboard
   locationId: 'tVGdeIuZuaSz68wIoKXS',
   recaptchaSiteKey: '6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX',
 } as const;

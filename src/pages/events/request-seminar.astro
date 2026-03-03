@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeminarRequestForm from '../../components/forms/SeminarRequestForm';
 ---
 
 <BaseLayout title="Request a Seminar" description="Request a jiu-jitsu seminar from our ambassadors and athletes.">
@@ -10,8 +11,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       connect you with our team.
     </p>
 
-    <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-      <p class="text-brand-subtle">Seminar request form coming soon.</p>
-    </div>
+    <SeminarRequestForm client:load />
   </section>
 </BaseLayout>
